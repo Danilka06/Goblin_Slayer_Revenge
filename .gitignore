@@ -1,4 +1,7 @@
 .venv
 .idea
+
 code/__pycache__
 docs/.obsidian
+
+map/__pycache__
