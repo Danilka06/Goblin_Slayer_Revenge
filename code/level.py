@@ -7,6 +7,7 @@ import pygame
 # import project files
 from settings import *
 from code.player import Player
+from code.debug import debug
 
 
 class Level:
@@ -23,4 +24,4 @@ class Level:
         self.player = Player()
 
     def run(self):
-        pass
+        debug(pygame.mouse.get_pos())
