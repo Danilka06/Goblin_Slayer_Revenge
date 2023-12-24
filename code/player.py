@@ -39,3 +39,4 @@ class Hero(pygame.sprite.Sprite):
             self.rect.x -= self.step[0]
             self.rect.y -= self.step[1]
         self.step = (0, 0)
+
