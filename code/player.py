@@ -17,7 +17,10 @@ class Player(pygame.sprite.Sprite):
         self.inventory = []
         self.weapon = 'Bare Hands'
 
-    def update(self):
+    def attack(self, side):
+        pass
+
+    def walk(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w] and self.pos[1] - 5 > 0:
             self.pos[1] += -5
@@ -38,3 +41,6 @@ class Player(pygame.sprite.Sprite):
             self.pos[0] += 0
         self.rect = self.image.get_rect(topleft=self.pos)
 
+    def update(self):
+        self.walk()
+        self.attack(self.status)
