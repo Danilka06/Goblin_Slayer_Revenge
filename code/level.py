@@ -25,6 +25,9 @@ class Level:
         # player
         self.player = None
 
+        # cheat code
+        self.cheat_code_activated = False
+
         # create map
         self.create_map()
 
@@ -70,8 +73,18 @@ class Level:
                              (self.visible_sprites),
                              pygame.image.load("../graphics/test/floor.png"))
 
+    def cheat_code(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_RIGHTBRACKET]:
+            self.cheat_code_activated = True
+
+        if self.cheat_code_activated:
+            debug(pygame.mouse.get_pos())
+
     def run(self):
         self.visible_sprites.draw(self.screen)
         self.obstacle_sprites.draw(self.screen)
 
+        # cheat code
+        self.cheat_code()
         # debug(pygame.mouse.get_pos())
