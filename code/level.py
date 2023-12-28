@@ -32,46 +32,33 @@ class Level:
         self.create_map()
 
     def create_map(self):
+        TILE_SETTING = {
+            "w": [(self.visible_sprites, self.obstacle_sprites),
+                  pygame.image.load("../graphics/test/wall.png")],
+            "r": [(self.visible_sprites, self.obstacle_sprites),
+                  pygame.image.load("../graphics/test/box.png")],
+            "d": [(self.visible_sprites, self.obstacle_sprites),
+                  pygame.image.load("../graphics/test/door.png")],
+            "g": [(self.visible_sprites),
+                  pygame.image.load("../graphics/test/floor.png")],
+            "p": [(self.visible_sprites, self.obstacle_sprites),
+                  pygame.image.load("../graphics/test/player.png")]
+        }
+
         for room_index, room in enumerate(level_map):
             for row_index, row in enumerate(room):
                 for col_index, col in enumerate(row):
                     x = TILESIZE * col_index
                     y = TILESIZE * row_index + STATS_OFFSET
 
-                    if col == "w":
-                        # w - wall
-                        Tile((x, y),
-                             (self.visible_sprites, self.obstacle_sprites),
-                             pygame.image.load("../graphics/test/wall.png"))
-                    elif col == "r":
-                        # r - rock
-                        Tile((x, y),
-                             (self.visible_sprites, self.obstacle_sprites),
-                             pygame.image.load("../graphics/test/box.png"))
-                    elif col == "d":
-                        # d - door
-                        Tile((x, y),
-                             (self.visible_sprites, self.obstacle_sprites),
-                             pygame.image.load("../graphics/test/door.png"))
-                    elif col == "g":
-                        # g - goblin
-                        Tile((x, y),
-                             (self.visible_sprites),
-                             pygame.image.load("../graphics/test/floor.png"))
-                    elif col == "p":
-                        # p - player
-                        Tile((x, y),
-                             (self.visible_sprites),
-                             pygame.image.load("../graphics/test/floor.png"))
-
-                        self.player = Player((x, y),
-                                             (self.visible_sprites, self.obstacle_sprites),
-                                             pygame.image.load("../graphics/test/player.png"))
+                    if col in TILE_SETTING.keys():
+                        if col == "p":
+                            self.player = Player((x, y), *TILE_SETTING["p"])
+                            Tile((x, y), *TILE_SETTING["g"])
+                        else:
+                            Tile((x, y), *TILE_SETTING[col])
                     else:
-                        # floor
-                        Tile((x, y),
-                             (self.visible_sprites),
-                             pygame.image.load("../graphics/test/floor.png"))
+                        Tile((x, y), *TILE_SETTING["g"])
 
     def cheat_code(self):
         keys = pygame.key.get_pressed()
@@ -82,6 +69,10 @@ class Level:
             debug(pygame.mouse.get_pos())
 
     def run(self):
+        # player
+        self.player.update()
+
+        # sprite groups draw
         self.visible_sprites.draw(self.screen)
         self.obstacle_sprites.draw(self.screen)
 
