@@ -13,11 +13,11 @@ class RandomMap:
     Link with article about Perlin noise in python
     https://habr.com/ru/companies/selectel/articles/731506/
     """
-    def __init__(self, length: int = 15, wight: int = 7, octaves: int = 4, amp: int = 1, period: int = 8) -> None:
+    def __init__(self, length: int = 15, wight: int = 7, octaves: float = 2, amp: int = 4, period: int = 3) -> None:
         """
             :parameter int length: Length of map
-            :parameter in wight: Wight of map
-            :parameter int octaves: Это количество кривых Перлина, которые отвечают за неоднородность шума. Чем больше этот параметр, тем «необычней» ландшафт по своей форме
+            :parameter int wight: Wight of map
+            :parameter float octaves: Это количество кривых Перлина, которые отвечают за неоднородность шума. Чем больше этот параметр, тем «необычней» ландшафт по своей форме
             :parameter int amp: Это коэффициент, который отвечает за итоговую высоту координаты y
             :parameter int period: Это периодичность пиков кривой Перлина. При ее увеличении поверхность становится более гладкой
             :return: None
@@ -41,9 +41,16 @@ class RandomMap:
 
         for x in range(self.wight):
             for z in range(self.length):
-                y = floor(self.noise([x / self.period, z / self.period]) * self.amp)
+                y = abs(int(floor(self.noise([x / self.period, z / self.period]) * self.amp)))
                 # print(f"x-{x}, z-{z}, y-{y}")
-                self.map[int(x)][int(z)] = abs(int(y))
+                self.map[int(x)][int(z)] = int(y > self.amp // 4)
+        """
+        self.amp // 2: because of abs. i dont want to use negative numbers
+        self.amp // 4: because we taking the middle value
+        y > self.amp // 4: if noise value more than middle value than 1 else 0
+        1 is rock
+        0 is floor
+        """
 
     def pprint(self):
         """Colored printing self.map for easy analyzing"""
