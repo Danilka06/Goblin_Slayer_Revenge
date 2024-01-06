@@ -31,9 +31,14 @@ class RandomMap:
         self.amp = amp
         self.period = period
 
-        self.map = [[0 for _ in range(self.length)] for _ in range(self.wight)]  # fill self.map with 0
-        self.map_fill()
+        self.map_draft = [[0 for _ in range(self.length)] for _ in range(self.wight)]  # fill self.map with 0
+        self.map = [[0 for _ in range(self.length + 2)] for _ in range(self.wight + 2)]
 
+        self.map_fill()
+        self.pprint()
+        print(self.map_draft)
+
+        self.map_formatting()
         self.pprint()
 
     def map_fill(self):
@@ -43,7 +48,7 @@ class RandomMap:
             for z in range(self.length):
                 y = abs(int(floor(self.noise([x / self.period, z / self.period]) * self.amp)))
                 # print(f"x-{x}, z-{z}, y-{y}")
-                self.map[int(x)][int(z)] = int(y > self.amp // 4)
+                self.map_draft[int(x)][int(z)] = int(y > self.amp // 4)
         """
         self.amp // 2: because of abs. i dont want to use negative numbers
         self.amp // 4: because we taking the middle value
@@ -52,11 +57,21 @@ class RandomMap:
         0 is floor
         """
 
+    def map_formatting(self):
+        for y in range(self.wight + 2):
+            for x in range(self.length + 2):
+                if x == 0 or y == 0 or x == self.length + 1 or y == self.wight + 1:
+                    self.map[y][x] = "w"
+                elif x == 1 or y == 1 or x == self.length or y == self.wight:
+                    self.map[y][x] = "g"
+                else:
+                    self.map[y][x] = "r" if self.map_draft[y - 1][x - 1] else "g"
+
     def pprint(self):
         """Colored printing self.map for easy analyzing"""
         for y in range(self.wight):
             for x in range(self.length):
-                item = self.map[y][x]
+                item = self.map_draft[y][x]
                 color = "31" if item == 1 else "32"
                 print(f"\033[{color}m{item}\033[0m", end="")  # colored print
                 print(" ", end="")
