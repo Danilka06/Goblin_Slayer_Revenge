@@ -5,6 +5,7 @@
 from numpy import floor
 from perlin_noise import PerlinNoise
 
+
 # import project files
 
 
@@ -13,6 +14,7 @@ class RandomMap:
     Link with article about Perlin noise in python
     https://habr.com/ru/companies/selectel/articles/731506/
     """
+
     def __init__(self, length: int = 15, wight: int = 7, octaves: float = 2, amp: int = 4, period: int = 3) -> None:
         """
             :parameter int length: Length of map
@@ -35,11 +37,13 @@ class RandomMap:
         self.map = [[0 for _ in range(self.length + 2)] for _ in range(self.wight + 2)]
 
         self.map_fill()
-        self.pprint()
+        self.pprint(self.map_draft)
         print(self.map_draft)
+        print("====self.map_draft printed====")
 
         self.map_formatting()
-        self.pprint()
+        # print(self.map)
+        self.pprint(self.map)
 
     def map_fill(self):
         """Filling with numbers using Perlin noise"""
@@ -60,19 +64,31 @@ class RandomMap:
     def map_formatting(self):
         for y in range(self.wight + 2):
             for x in range(self.length + 2):
-                if x == 0 or y == 0 or x == self.length + 1 or y == self.wight + 1:
+                print(x, self.length, self.length + 2)
+                if x == 0 or y == 0 or x == self.length + 2 - 1 or y == self.wight - 1:
                     self.map[y][x] = "w"
-                elif x == 1 or y == 1 or x == self.length or y == self.wight:
+                    # print(1)
+                elif x == 1 or y == 1 or x == self.length - 2 or y == self.wight - 2:
                     self.map[y][x] = "g"
+                    # print(2)
                 else:
-                    self.map[y][x] = "r" if self.map_draft[y - 1][x - 1] else "g"
+                    self.map[y][x] = "r" if self.map_draft[y - 2][x - 2] else "g"
+                    # print(3)
 
-    def pprint(self):
+    def pprint(self, map):
         """Colored printing self.map for easy analyzing"""
-        for y in range(self.wight):
-            for x in range(self.length):
-                item = self.map_draft[y][x]
-                color = "31" if item == 1 else "32"
+        for y in range(len(map) - 2):
+            for x in range(len(map[y]) - 2):
+                item = map[y][x]
+                # print(item)
+                if item in ("r", 1):  # rock
+                    color = "31"
+                elif item in ("w",):  # wall
+                    color = "32"
+                elif item in ("g", 0):  # ground
+                    color = "33"
+                else:
+                    color = "34"
                 print(f"\033[{color}m{item}\033[0m", end="")  # colored print
                 print(" ", end="")
             print()
