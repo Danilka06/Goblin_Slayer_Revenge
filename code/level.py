@@ -10,6 +10,7 @@ from code.player import Player
 from code.debug import debug
 from map.test import level_map
 from code.tile import Tile
+from code.random_map import RandomMap
 
 
 class Level:
@@ -45,20 +46,27 @@ class Level:
                   pygame.image.load("../graphics/test/player.png")]
         }
 
-        for room_index, room in enumerate(level_map):
-            for row_index, row in enumerate(room):
-                for col_index, col in enumerate(row):
-                    x = TILESIZE * col_index
-                    y = TILESIZE * row_index + STATS_OFFSET
+        self.map_object = RandomMap()
+        self.map = self.map_object.map
 
-                    if col in TILE_SETTING.keys():
-                        if col == "p":
-                            self.player = Player((x, y), *TILE_SETTING["p"])
-                            Tile((x, y), *TILE_SETTING["g"])
-                        else:
-                            Tile((x, y), *TILE_SETTING[col])
-                    else:
+        self.map[4][1] = "p"
+
+        # for room_index, room in enumerate(self.map):
+        for row_index, row in enumerate(self.map):
+            for col_index, col in enumerate(row):
+                x = TILESIZE * col_index
+                y = TILESIZE * row_index + STATS_OFFSET
+
+                if col in TILE_SETTING.keys():
+                    if col == "p":
+                        player_position = (x, y)
                         Tile((x, y), *TILE_SETTING["g"])
+                    else:
+                        Tile((x, y), *TILE_SETTING[col])
+                else:
+                    Tile((x, y), *TILE_SETTING["g"])
+
+        self.player = Player(player_position, *TILE_SETTING["p"])
 
     def cheat_code(self):
         keys = pygame.key.get_pressed()

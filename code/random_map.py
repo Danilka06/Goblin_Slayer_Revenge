@@ -15,10 +15,10 @@ class RandomMap:
     https://habr.com/ru/companies/selectel/articles/731506/
     """
 
-    def __init__(self, length: int = 15, wight: int = 7, octaves: float = 2, amp: int = 4, period: int = 3) -> None:
+    def __init__(self, length: int = 15, width: int = 7, octaves: float = 2, amp: int = 4, period: int = 3) -> None:
         """
             :parameter int length: Length of map
-            :parameter int wight: Wight of map
+            :parameter int width: Wight of map
             :parameter float octaves: Это количество кривых Перлина, которые отвечают за неоднородность шума. Чем больше этот параметр, тем «необычней» ландшафт по своей форме
             :parameter int amp: Это коэффициент, который отвечает за итоговую высоту координаты y
             :parameter int period: Это периодичность пиков кривой Перлина. При ее увеличении поверхность становится более гладкой
@@ -28,10 +28,10 @@ class RandomMap:
         self.noise = PerlinNoise(octaves=octaves)
 
         self.length = length
-        self.wight = wight
+        self.width = width
 
         self.full_length = self.length + 2
-        self.full_width = self.wight + 2
+        self.full_width = self.width + 2
         self.amp = amp
         self.period = period
 
@@ -67,10 +67,10 @@ class RandomMap:
         for y in range(self.full_width):
             for x in range(self.full_length):
                 # print(x, self.length, self.length + 2)
-                if x == 0 or y == 0 or x == self.length - 1 or y == self.wight - 1:
+                if x == 0 or y == 0 or x == self.full_length - 1 or y == self.full_width - 1:
                     self.map[y][x] = "w"
                     # print(1)
-                elif x == 1 or y == 1 or x == self.length - 2 or y == self.wight - 2:
+                elif x == 1 or y == 1 or x == self.full_length - 2 or y == self.full_width - 2:
                     self.map[y][x] = "g"
                     # print(2)
                 else:
@@ -81,8 +81,8 @@ class RandomMap:
         """Colored printing self.map for easy analyzing"""
         print("0 1 2 3 4 5 6 7 8 9101112  14")
 
-        for y in range(len(map) - 2):
-            for x in range(len(map[y]) - 2):
+        for y in range(len(map)):
+            for x in range(len(map[y])):
                 item = map[y][x]
                 # print(item)
                 if item in ("r", 1):  # rock
