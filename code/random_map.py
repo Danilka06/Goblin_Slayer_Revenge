@@ -30,15 +30,17 @@ class RandomMap:
         self.length = length
         self.wight = wight
 
+        self.full_length = self.length + 2
+        self.full_width = self.wight + 2
         self.amp = amp
         self.period = period
 
-        self.map_draft = [[0 for _ in range(self.length)] for _ in range(self.wight)]  # fill self.map with 0
-        self.map = [[0 for _ in range(self.length + 2)] for _ in range(self.wight + 2)]
+        # self.map_draft = [[0 for _ in range(self.length)] for _ in range(self.wight)]  # fill self.map with 0
+        self.map = [[0 for _ in range(self.full_length)] for _ in range(self.full_width)]
 
         self.map_fill()
-        self.pprint(self.map_draft)
-        print(self.map_draft)
+        self.pprint(self.map)
+        print(self.map)
         print("====self.map_draft printed====")
 
         self.map_formatting()
@@ -48,11 +50,11 @@ class RandomMap:
     def map_fill(self):
         """Filling with numbers using Perlin noise"""
 
-        for x in range(self.wight):
-            for z in range(self.length):
+        for x in range(self.full_width):
+            for z in range(self.full_length):
                 y = abs(int(floor(self.noise([x / self.period, z / self.period]) * self.amp)))
                 # print(f"x-{x}, z-{z}, y-{y}")
-                self.map_draft[int(x)][int(z)] = int(y > self.amp // 4)
+                self.map[int(x)][int(z)] = int(y > self.amp // 4)
         """
         self.amp // 2: because of abs. i dont want to use negative numbers
         self.amp // 4: because we taking the middle value
@@ -62,21 +64,23 @@ class RandomMap:
         """
 
     def map_formatting(self):
-        for y in range(self.wight + 2):
-            for x in range(self.length + 2):
-                print(x, self.length, self.length + 2)
-                if x == 0 or y == 0 or x == self.length + 2 - 1 or y == self.wight - 1:
+        for y in range(self.full_width):
+            for x in range(self.full_length):
+                # print(x, self.length, self.length + 2)
+                if x == 0 or y == 0 or x == self.length - 1 or y == self.wight - 1:
                     self.map[y][x] = "w"
                     # print(1)
                 elif x == 1 or y == 1 or x == self.length - 2 or y == self.wight - 2:
                     self.map[y][x] = "g"
                     # print(2)
                 else:
-                    self.map[y][x] = "r" if self.map_draft[y - 2][x - 2] else "g"
+                    self.map[y][x] = "r" if self.map[y][x] else "g"
                     # print(3)
 
     def pprint(self, map):
         """Colored printing self.map for easy analyzing"""
+        print("0 1 2 3 4 5 6 7 8 9101112  14")
+
         for y in range(len(map) - 2):
             for x in range(len(map[y]) - 2):
                 item = map[y][x]
