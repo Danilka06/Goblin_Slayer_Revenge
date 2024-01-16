@@ -46,7 +46,7 @@ class Level:
             "g": [(self.visible_sprites),                         # g - ground
                   pygame.image.load("../graphics/test/floor.png")],
             "p": [(self.visible_sprites, self.obstacle_sprites),  # p - player
-                  pygame.image.load("../graphics/test/player.png")]
+                  pygame.image.load("../graphics/test/player.png"), self.obstacle_sprites]
         }
 
         self.map_object = RandomMap()
@@ -89,4 +89,4 @@ class Level:
 
         # cheat code
         self.cheat_code()
-        # debug(pygame.mouse.get_pos())
+        debug(self.player.direction)

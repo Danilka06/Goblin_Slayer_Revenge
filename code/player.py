@@ -6,19 +6,21 @@ import pygame
 # import project files
 from settings import *
 from fireball import Fireball
+from entity import Entity
 
 
-class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, image):
+class Player(Entity):
+    def __init__(self, pos, groups, image, obstacle_sprites):
         super().__init__(groups)
         self.image = image
         self.pos = list(pos)
+        self.obstacle_sprites = obstacle_sprites
 
         self.width, self.height = TILESIZE, TILESIZE
         self.rect = self.image.get_rect(topleft=self.pos)
+        self.hitbox = self.rect.inflate(0, 0)  # hitbox can be smaller than rect to simulate camera
 
         self.speed = 5
-        self.direction = pygame.math.Vector2()
 
         self.status = 'down'
         self.inventory = []
@@ -59,12 +61,6 @@ class Player(pygame.sprite.Sprite):
         else:
             self.status = "idle"
             self.direction.x = 0
-
-    def move(self, speed):
-        if self.direction.magnitude() != 0:
-            self.direction = self.direction.normalize()
-
-        self.rect.center += self.direction * speed
 
     def update(self):
         self.input()
