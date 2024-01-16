@@ -14,15 +14,15 @@ class Player(Entity):
         super().__init__(groups)
         self.image = image
         self.pos = list(pos)
-        self.obstacle_sprites = obstacle_sprites
+        self.obstacle_sprites = obstacle_sprites  # obstacle sprites group ( for Entity )
 
-        self.width, self.height = TILESIZE, TILESIZE
+        self.width, self.height = TILESIZE, TILESIZE  # player size
         self.rect = self.image.get_rect(topleft=self.pos)
-        self.hitbox = self.rect.inflate(0, 0)  # hitbox can be smaller than rect to simulate camera
+        self.hitbox = self.rect.inflate(0, 0)  # hitbox can be smaller than rect to simulate camera ( for Entity )
 
-        self.speed = 5
+        self.speed = 5  # player speed
 
-        self.status = 'down'
+        self.status = 'down'  # player status ["up", "down", "left", "right", "idle"]
         self.inventory = []
         self.weapon = 'Bare Hands'
 
@@ -38,6 +38,7 @@ class Player(Entity):
             Fireball((self.pos[0], self.pos[1] + 64), side)
 
     def input(self):
+        """Checking move buttons pressing"""
         keys = pygame.key.get_pressed()
 
         # movement along axis y
@@ -48,7 +49,7 @@ class Player(Entity):
             self.status = 'down'
             self.direction.y = 1
         else:
-            self.status = "idle"
+            self.status = "idle"  # no one button on axis y isn't pressed
             self.direction.y = 0
 
         # movement along axis x
@@ -59,7 +60,7 @@ class Player(Entity):
             self.status = 'left'
             self.direction.x = -1
         else:
-            self.status = "idle"
+            self.status = "idle"  # no one button on axis x isn't pressed
             self.direction.x = 0
 
     def update(self):
