@@ -3,6 +3,8 @@
 # import not preinstalled packages
 import pygame
 
+# import project files
+
 
 class Fireball(pygame.sprite.Sprite):
     def __init__(self, pos, status):

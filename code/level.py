@@ -82,11 +82,9 @@ class Level:
             debug(pygame.mouse.get_pos())
 
     def run(self):
-        # player
-        self.player.update()
-
-        # sprite groups draw
+        # sprite groups draw and update
         self.visible_sprites.draw(self.screen)
+        self.visible_sprites.update()
         self.obstacle_sprites.draw(self.screen)
 
         # cheat code
