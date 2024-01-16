@@ -11,7 +11,6 @@ from code.debug import debug
 from code.tile import Tile
 from code.random_map import RandomMap
 
-# TODO: door generating
 # TODO: generating new rooms after going through doors
 
 

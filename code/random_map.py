@@ -4,7 +4,8 @@
 # import not preinstalled packages
 from numpy import floor
 from perlin_noise import PerlinNoise
-
+from random import randint as rnd
+from random import choices
 
 # import project files
 
@@ -38,12 +39,15 @@ class RandomMap:
         # self.map_draft = [[0 for _ in range(self.length)] for _ in range(self.wight)]  # fill self.map with 0
         self.map = [[0 for _ in range(self.full_length)] for _ in range(self.full_width)]
 
+        self.doors_sides = []
+
         self.map_fill()
         self.pprint(self.map)
         print(self.map)
         print("====self.map_draft printed====")
 
         self.map_formatting()
+        self.door_generation()
         # print(self.map)
         self.pprint(self.map)
 
@@ -62,6 +66,22 @@ class RandomMap:
         1 is rock
         0 is floor
         """
+
+    def door_generation(self):
+        doors_amount = rnd(0, 3)
+        available_sides = ["up", "down", "left", "right"]
+        for side in self.doors_sides:
+            available_sides -= side
+        self.doors_sides.extend(choices(available_sides, k=doors_amount))
+
+        doors_position = {"up": (0, self.full_length // 2),
+                          "down": (self.full_width - 1, self.full_length // 2),
+                          "left": (self.full_width // 2, 0),
+                          "right": (self.full_width // 2, self.full_length - 1)}
+
+        for door in self.doors_sides:
+            pos = doors_position[door]
+            self.map[pos[0]][pos[1]] = "d"
 
     def map_formatting(self):
         for y in range(self.full_width):
