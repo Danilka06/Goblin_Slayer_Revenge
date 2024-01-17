@@ -45,7 +45,7 @@ class Level:
                   pygame.image.load("../graphics/test/door.png")],
             "g": [(self.visible_sprites),                         # g - ground
                   pygame.image.load("../graphics/test/floor.png")],
-            "p": [(self.visible_sprites, self.obstacle_sprites),  # p - player
+            "p": [(self.visible_sprites),                         # p - player
                   pygame.image.load("../graphics/test/player.png"), self.obstacle_sprites]
         }
 

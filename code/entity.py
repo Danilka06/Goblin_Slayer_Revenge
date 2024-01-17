@@ -20,9 +20,9 @@ class Entity(pygame.sprite.Sprite):
             self.direction = self.direction.normalize()
 
         self.hitbox.x += self.direction.x * speed
-        # self.collision('horizontal')
+        self.collision('horizontal')
         self.hitbox.y += self.direction.y * speed
-        # self.collision('vertical')
+        self.collision('vertical')
         self.rect.center = self.hitbox.center
 
     def collision(self, direction):

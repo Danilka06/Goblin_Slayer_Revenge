@@ -68,8 +68,8 @@ class RandomMap:
         """
 
     def door_generation(self):
-        doors_amount = rnd(0, 3)
-        available_sides = ["up", "down", "left", "right"]
+        available_sides = ["left", "right"]
+        doors_amount = rnd(0, len(available_sides) - 1)
         for side in self.doors_sides:
             available_sides -= side
         self.doors_sides.extend(choices(available_sides, k=doors_amount))
