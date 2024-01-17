@@ -23,9 +23,8 @@ class Game:
     def run(self):
         while True:
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
+                if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    exit()
 
             self.screen.fill('black')
             self.level.run()
