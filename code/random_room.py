@@ -10,7 +10,7 @@ from random import choices
 # import project files
 
 
-class RandomMap:
+class RandomRoom:
     """
     Link with article about Perlin noise in python
     https://habr.com/ru/companies/selectel/articles/731506/
@@ -37,28 +37,22 @@ class RandomMap:
         self.period = period
 
         # self.map_draft = [[0 for _ in range(self.length)] for _ in range(self.wight)]  # fill self.map with 0
-        self.map = [[0 for _ in range(self.full_length)] for _ in range(self.full_width)]
+        self.room = [[0 for _ in range(self.full_length)] for _ in range(self.full_width)]
 
         self.doors_sides = []
 
-        self.map_fill()
-        self.pprint(self.map)
-        print(self.map)
-        print("====self.map_draft printed====")
-
-        self.map_formatting()
+        self.room_fill()
+        self.room_formatting()
         self.door_generation()
-        # print(self.map)
-        self.pprint(self.map)
 
-    def map_fill(self):
+    def room_fill(self):
         """Filling with numbers using Perlin noise"""
 
         for x in range(self.full_width):
             for z in range(self.full_length):
                 y = abs(int(floor(self.noise([x / self.period, z / self.period]) * self.amp)))
                 # print(f"x-{x}, z-{z}, y-{y}")
-                self.map[int(x)][int(z)] = int(y > self.amp // 4)
+                self.room[int(x)][int(z)] = int(y > self.amp // 4)
         """
         self.amp // 2: because of abs. i dont want to use negative numbers
         self.amp // 4: because we taking the middle value
@@ -69,7 +63,7 @@ class RandomMap:
 
     def door_generation(self):
         available_sides = ["left", "right"]
-        doors_amount = rnd(0, len(available_sides) - 1)
+        doors_amount = rnd(1, len(available_sides) - 1)
         for side in self.doors_sides:
             available_sides -= side
         self.doors_sides.extend(choices(available_sides, k=doors_amount))
@@ -81,20 +75,20 @@ class RandomMap:
 
         for door in self.doors_sides:
             pos = doors_position[door]
-            self.map[pos[0]][pos[1]] = "d"
+            self.room[pos[0]][pos[1]] = "d" + door[0]
 
-    def map_formatting(self):
+    def room_formatting(self):
         for y in range(self.full_width):
             for x in range(self.full_length):
                 # print(x, self.length, self.length + 2)
                 if x == 0 or y == 0 or x == self.full_length - 1 or y == self.full_width - 1:
-                    self.map[y][x] = "w"
+                    self.room[y][x] = "w"
                     # print(1)
                 elif x == 1 or y == 1 or x == self.full_length - 2 or y == self.full_width - 2:
-                    self.map[y][x] = "g"
+                    self.room[y][x] = "g"
                     # print(2)
                 else:
-                    self.map[y][x] = "r" if self.map[y][x] else "g"
+                    self.room[y][x] = "r" if self.room[y][x] else "g"
                     # print(3)
 
     def pprint(self, map):
@@ -118,4 +112,4 @@ class RandomMap:
             print()
 
 
-RandomMap()
+RandomRoom()
